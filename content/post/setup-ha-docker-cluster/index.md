@@ -1,7 +1,7 @@
 ---
-title: Comment j'ai créé mon cluster Docker Swarm pour mes applications
+title: "Comment j'ai créé mon cluster Docker Swarm pour mes applications"
 date: 2026-04-06
-description: Créer un Cluster Haute Disponibilité : Docker Swarm, MicroCeph, MariaDB et Keepalived
+description: "Créer un Cluster Haute Disponibilité : Docker Swarm, MicroCeph, MariaDB et Keepalived"
 tags: 
     - docker
     - high-availability
