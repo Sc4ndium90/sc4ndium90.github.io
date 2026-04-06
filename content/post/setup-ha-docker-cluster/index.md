@@ -19,8 +19,8 @@ J'ai déployé ce cluster à la main sur 3 mini-pc Dell Wyse 5070 modifiés, aya
 
 ![Network Overview](network-overview.png)
 
-# Mise en place de Docker Swarm
-## Installation de Docker
+## Mise en place de Docker Swarm
+### Installation de Docker
 Je vais commencer par déployer le cluster Docker Swarm. Pour cela, il faudra d'abord installer Docker sur chaque noeud. Je vais suivre la documentation de Docker qui est la suivante (que vous pouvez retrouver [ici](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) et [ici](https://docs.docker.com/engine/install/linux-postinstall)):
 
 1. Installation du repository Docker :
@@ -54,7 +54,7 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 sudo usermod -aG docker $USER
 ```
 
-## Création du cluster
+### Création du cluster
 
 Une fois Docker installé, j'initalise le cluster Docker Swarm. Si le système comporte plusieurs interfaces réseaux (pour ceux qui auraient une interface interne dédié par exemple), il faudra spécifier l'ip avec `--advertise-addr <ip-addr>`. La documentation de Docker Swarm est disponible [ici](https://docs.docker.com/reference/cli/docker/swarm/init/).
 ```bash
@@ -71,8 +71,8 @@ Ensuite, j'élève les deux autres noeuds comme "Master" du cluster : si le seul
 docker node promote <node-name>
 ```
 
-# Mise en place de MicroCeph
-# Installation
+## Mise en place de MicroCeph
+### Installation
 MicroCeph est une version allégé de Ceph, qui est téléchargeable depuis "Snap". Je vais l'installer sur chaque noeud :
 ```bash
 sudo snap install microceph
@@ -130,7 +130,7 @@ Comme tout va bien, je vais créer mon espace CephFS "Docker" :
 sudo microceph.ceph fs volume create docker
 ``` 
 
-## Configuration du montage
+### Configuration du montage
 Sur chaque noeud, je dois installer un package nécessaire au montage d'un volume CephFS, et également créer mon point de montage :
 ```bash
 sudo apt install ceph-common
@@ -167,7 +167,7 @@ Wants=mnt-cephfs.mount
 
 Ce fichier agit comme une dépendance, et donc Docker pourra "provoquer" le montage du volume Docker sur `/mnt/cephfs`.
 
-# Mise en place de MariaDB Galera
+## Mise en place de MariaDB Galera
 
 Le fonctionnement en haute disponibilité de MariaDB est particulier : là où de nombreuses bases de données vont avoir un "Master" et plusieurs "Workers", MariaDB Galera utilise uniquement des "Masters". Chaque noeud est donc en capacité de prendre en compte une requête SQL.
 
@@ -224,7 +224,7 @@ SHOW STATUS LIKE 'wsrep_cluster_size';
 SHOW STATUS LIKE 'wsrep_cluster_status';
 ```
 
-# Installation de Keepalived
+## Installation de Keepalived
 Pour atteindre MariaDB ou d'autres services depuis une seule et unique adresse IP, je vais utiliser keepalived qui fournira une "VIP" (Virtual IP) via le protocole VRRP.
 
 J'installe les packages de Keepalived via APT :
@@ -255,6 +255,6 @@ Et enfin, activer et démarrer keepalived :
 sudo systemctl enable --now keepalived
 ```
 
-# Pour aller plus loin
+## Pour aller plus loin
 
 *Un lien vers mon repository GitHub qui regroupe toutes les configurations sera disponible prochainement.*
